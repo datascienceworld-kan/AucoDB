@@ -1,0 +1,22 @@
+[project]
+name = "aucodb"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "phamdinhkhanh",email = "phamdinhkhanh.tkt53.neu@gmail.com"}
+]
+readme = "README.md"
+
+[tool.poetry]
+packages = [{include = "aucodb", from = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+fastapi = "0.99.1"
+uvicorn = "0.22.0"
+ipykernel = "6.29.5"
+requests = "2.32.3"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
