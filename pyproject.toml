@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aucodb"
-version = "0.1.0"
+version = "0.1.1"
 description = "No-SQL Documented Collection Database"
 authors = ["phamdinhkhanh <phamdinhkhanh.tkt53.neu@gmail.com>"]
 readme = "README.md"

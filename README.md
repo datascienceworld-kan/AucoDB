@@ -17,21 +17,19 @@ AucoDB is a modern, lightweight NoSQL database designed for flexibility, fault t
 To get started with AucoDB, clone the repository and install the required dependencies.
 
 ### Steps
+There are two ways to install AucoDB:
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/datascienceworld-kan/aucodb.git
-   ```
-2. Navigate to the project directory:
-   ```bash
    cd aucodb
-   ```
-3. Install dependencies using pip:
-   ```bash
    pip install -r requirements.txt
    poetry install
    ```
-
+2. Install by pip:
+   ```
+   pip install aucodb==0.1.0
+   ```
 ## Running the AucoDB Server
 
 AucoDB provides a built-in server for HTTP-based operations. The server can be started with a simple Python script.

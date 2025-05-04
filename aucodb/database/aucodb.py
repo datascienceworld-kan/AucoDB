@@ -351,7 +351,7 @@ class AucoDB(AucoDBMeta):
     def initialize(self, data_path: str, **kwargs):
         """Initialize the database with a JSON file at data_path."""
         self.data_path = Path(data_path)
-
+        os.makedirs(self.data_path.parent, exist_ok=True)
         try:
             if self.data_path.exists():
                 with open(self.data_path, "r") as f:
