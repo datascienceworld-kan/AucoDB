@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Any
@@ -10,6 +11,7 @@ from aucodb.database import (
 import logging
 from pathlib import Path
 
+os.makedirs("logs", exist_ok=True)
 # Configure logging
 logging.basicConfig(
     filename="auco_server.log",

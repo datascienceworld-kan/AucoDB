@@ -1,14 +1,9 @@
-[project]
+[tool.poetry]
 name = "aucodb"
 version = "0.1.0"
-description = ""
-authors = [
-    {name = "phamdinhkhanh",email = "phamdinhkhanh.tkt53.neu@gmail.com"}
-]
+description = "No-SQL Documented Collection Database"
+authors = ["phamdinhkhanh <phamdinhkhanh.tkt53.neu@gmail.com>"]
 readme = "README.md"
-
-[tool.poetry]
-packages = [{include = "aucodb", from = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10"
@@ -16,6 +11,15 @@ fastapi = "0.99.1"
 uvicorn = "0.22.0"
 ipykernel = "6.29.5"
 requests = "2.32.3"
+pydantic = "1.10.22"
+pydantic_core = "2.23.4"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.7.1"
+black = "^24.4.2"
+
+[tool.poetry.group.test.dependencies]
+pytest = "7.2.2"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

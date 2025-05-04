@@ -1,8 +1,10 @@
+import os
 import requests
 from typing import List, Dict, Any, Optional
 import logging
 from abc import ABC, abstractmethod
 
+os.makedirs("logs", exist_ok=True)
 # Configure logging
 logging.basicConfig(
     filename="logs/auco_client.log",

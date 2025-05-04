@@ -1,3 +1,4 @@
+import os
 import json
 from typing import List, Any, Union
 import threading
@@ -9,6 +10,7 @@ from pathlib import Path
 import re
 
 
+os.makedirs("logs", exist_ok=True)
 # Configure logging
 logging.basicConfig(
     filename="logs/app.log",

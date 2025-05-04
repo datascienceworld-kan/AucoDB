@@ -1,8 +1,10 @@
+import os
 import pytest
 import requests
 from aucodb.client import AucoClient
 import logging
 
+os.makedirs("logs", exist_ok=True)
 # Configure logging
 logging.basicConfig(
     filename="logs/test_aucoclient.log",

@@ -1,3 +1,4 @@
+import os
 import pytest
 import tempfile
 import os
@@ -6,6 +7,7 @@ from aucodb.database import AucoDB, Collection, Record
 import logging
 from uuid import uuid4
 
+os.makedirs("logs", exist_ok=True)
 # Configure logging
 logging.basicConfig(
     filename="logs/test_aucodb.log",
