@@ -42,7 +42,7 @@ AucoDB provides a built-in server for HTTP-based operations. The server can be s
 from aucodb.server import auco_server
 
 # Run the server on localhost:8000, using a JSON file for storage
-auco_server.run("127.0.0.1", 8000, "cache/aucodb.json", "aucodb")
+auco_server.run(host="127.0.0.1", port=8000, data_path="cache/aucodb.json", data_name="aucodb")
 ```
 
 This starts the AucoDB server, listening on `http://127.0.0.1:8000` and storing data in `cache/aucodb.json`.
@@ -61,7 +61,7 @@ client = AucoClient(base_url='http://localhost:8000')
 client.connect()
 
 # Create a collection
-message = client.create_collection("users")
+message = client.create_collection(collection_name="users")
 print(message)
 
 # Add records
@@ -69,34 +69,34 @@ user1 = {"name": "Alice", "age": 30, "email": "alice@example.com"}
 user2 = {"name": "Bob", "age": 25, "email": "bob@example.com"}
 user3 = {"name": "Charlie", "age": 35, "email": "Charlie@example.com"}
 
-user1 = client.add("users", user1)
-user2 = client.add("users", user2)
-user3 = client.add("users", user3)
+user1 = client.add(collection_name="users", fields=user1)
+user2 = client.add(collection_name="users", fields=user2)
+user3 = client.add(collection_name="users", fields=user3)
 
 # Get a record by ID
 record_id = user1["record_id"]
-record = client.get("users", record_id)
+record = client.get(collection_name="users", record_id=record_id)
 print(record)
 
 # Find records with condition (age >= 30)
-records = client.find("users", "age>=30")
+records = client.find(collection_name="users", query="age>=30")
 print(records)
 
 # Sort records by age (descending)
-sorted_records = client.sort("users", "age", reverse=True)
+sorted_records = client.sort(collection_name="users", field="age", reverse=True)
 print(sorted_records)
 
 # Update a record
-client.update("users", record_id, {"age": 31})
-record = client.get("users", record_id)
+client.update(collection_name="users", record_id=record_id, fields={"age": 31})
+record = client.get(collection_name="users", record_id=record_id)
 print(record)
 
 # Delete a record
-message = client.delete("users", record_id)
+message = client.delete(collection_name="users", record_id=record_id)
 print(message)
 
 # Get all records
-records = client.get("users")
+records = client.get(collection_name="users")
 print(records)
 
 # Close the client
@@ -127,7 +127,7 @@ db = AucoDB(data_name="aucodb", data_path="cache/aucodb.json")
 
 # Create a new collection
 users_collection = Collection(name="users")
-db.add_collection(users_collection)
+db.add_collection(collection=users_collection)
 logging.info("Created 'users' collection")
 
 # Add records
@@ -135,9 +135,9 @@ user1 = {"id": 1, "name": "Alice", "age": 30, "email": "alice@example.com"}
 user2 = {"id": 2, "name": "Bob", "age": 25, "email": "bob@example.com"}
 user3 = {"id": 3, "name": "Charlie", "age": 35, "email": "Charlie@example.com"}
 
-db.collections["users"].add(user1)
-db.collections["users"].add(user2)
-db.collections["users"].add(user3)
+db.collections["users"].add(record=user1)
+db.collections["users"].add(record=user2)
+db.collections["users"].add(record=user3)
 db.save()
 
 # Print all records
@@ -147,24 +147,24 @@ for record in db.collections["users"].records:
 
 # Find records where age >= 30
 print("Users with age >= 30:")
-found_records = db.collections["users"].find("age>=30")
+found_records = db.collections["users"].find(query="age>=30")
 for record in found_records:
     print(record)
 
 # Update a record
-db.collections["users"].update(user1.get("id"), {"age": 31, "email": "alice.updated@example.com"})
+db.collections["users"].update(record_id=user1.get("id"), updated_dict={"age": 31, "email": "alice.updated@example.com"})
 print("After updating Alice's record:")
-updated_record = db.collections["users"].get(user1.get("id"))
+updated_record = db.collections["users"].get(record_id=user1.get("id"))
 print(updated_record)
 
 # Sort records by age (descending)
 print("Users sorted by age (descending):")
-sorted_records = db.collections["users"].sort("age", reverse=True)
+sorted_records = db.collections["users"].sort(field="age", reverse=True)
 for record in sorted_records:
     print(record)
 
 # Delete a record
-db.collections["users"].delete(user2.get("id"))
+db.collections["users"].delete(record_id=user2.get("id"))
 print("After deleting Bob's record:")
 for record in db.collections["users"].records:
     print(record)
