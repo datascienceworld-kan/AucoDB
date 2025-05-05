@@ -28,7 +28,7 @@ There are two ways to install AucoDB:
    ```
 2. Install by pip:
    ```
-   pip install aucodb==0.1.0
+   pip install aucodb==0.1.1
    ```
 ## Running the AucoDB Server
 
