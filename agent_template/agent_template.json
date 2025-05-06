@@ -1,0 +1,56 @@
+{
+    "data_name": "aucodb",
+    "collections": {
+        "agents": {
+            "name": "agents",
+            "id": "0d8bcbbb-e41c-4aee-9cb4-7e79ec292b4a",
+            "records": [
+                {
+                    "id": "883c19f4-d568-4df0-bd2e-1055459e403d",
+                    "created_at": "2025-05-06 23:40:58.477487",
+                    "updated_at": "2025-05-06 23:40:58.477487",
+                    "name": "agent1",
+                    "tools": {
+                        "fetch_stock_data": {
+                            "tool_name": "fetch_stock_data",
+                            "arguments": {
+                                "symbol": "AAPL",
+                                "start_date": "2020-01-01",
+                                "end_date": "2025-01-01",
+                                "interval": "1d"
+                            },
+                            "return": "pd.DataFrame",
+                            "docstring": "Fetch historical stock data from Yahoo Finance.",
+                            "dependencies": [
+                                "yfinance",
+                                "pandas"
+                            ],
+                            "module_path": "longquanagent.tools.yfinance_tools",
+                            "tool_call_id": "tool_2a0ca36b-3d93-4480-85ad-86ce5772d114"
+                        },
+                        "visualize_stock_data": {
+                            "tool_name": "visualize_stock_data",
+                            "arguments": {
+                                "symbol": "AAPL",
+                                "start_date": "2020-01-01",
+                                "end_date": "2025-01-01",
+                                "interval": "1d"
+                            },
+                            "return": "None",
+                            "docstring": "Visualize stock data with multiple chart types.",
+                            "dependencies": [
+                                "yfinance",
+                                "pandas",
+                                "matplotlib",
+                                "plotly"
+                            ],
+                            "module_path": "longquanagent.tools.yfinance_tools",
+                            "tool_call_id": "tool_617c3e5f-f452-4b27-8cb8-ccb64f7f489a"
+                        }
+                    }
+                }
+            ],
+            "lock": "<unlocked _thread.lock object at 0x106e99c00>"
+        }
+    }
+}
