@@ -24,18 +24,22 @@ class RecordMeta(ABC):
     @abstractmethod
     def __init__(
         self, created_at: datetime = None, updated_at: datetime = None, **kwargs
-    ): ...
+    ):
+        ...
 
     @abstractmethod
-    def update(self, update_fields: dict): ...
+    def update(self, update_fields: dict):
+        ...
 
     @abstractmethod
-    def to_dict(self): ...
-        
+    def to_dict(self):
+        ...
+
 
 class JsonBase(MutableMapping):
     def __init__(self, **kwargs):
         self._data = kwargs
+
     @classmethod
     def from_dict(cls, data: dict):
         return cls(**dict([(k, v) for (k, v) in data.items()]))
@@ -48,6 +52,7 @@ class JsonBase(MutableMapping):
         path.parent.mkdir(parents=True, exist_ok=True)
         with open(path, "w") as f:
             json.dump(self.to_dict(), f, ensure_ascii=False, indent=4)
+
     def __getitem__(self, key):
         return self._data[key]
 
@@ -109,15 +114,15 @@ class CollectionMeta(ABC):
     @abstractmethod
     def __init__(self, *args, **kwargs):
         pass
-    
+
     @abstractmethod
     def add(self, record: Record):
         pass
-    
+
     @abstractmethod
     def delete(self, record_id: str):
         pass
-    
+
     @abstractmethod
     def update(self, record_id: str, updated_dict: dict):
         pass
@@ -125,11 +130,11 @@ class CollectionMeta(ABC):
     @abstractmethod
     def find(self, query: str):
         pass
-    
+
     @abstractmethod
     def get(self, record_id: str):
         pass
-    
+
     @abstractmethod
     def sort(self, field: str, reverse: bool = False):
         pass
@@ -142,7 +147,7 @@ class Collection(JsonBase, CollectionMeta):
         id: str = None,
         records: List[Record] = [],
         lock: threading.Lock = None,
-        **kargs
+        **kargs,
     ):
         assert name
         super().__init__(**kargs)
@@ -174,19 +179,19 @@ class Collection(JsonBase, CollectionMeta):
     @classmethod
     def from_dict(cls, data: dict):
         kv_pairs = []
-        for (k, v) in data.items():
+        for k, v in data.items():
             if k == "records":
                 records = [Record.from_dict(v) for v in v]
                 kv_pairs.append((k, records))
             else:
                 kv_pairs.append((k, v))
         return cls(**dict(kv_pairs))
-    
+
     def __repr__(self):
         records = [rec.__repr__() for rec in self.records]
         expression = f"Collection(id={self.id}, name={self.name}, records={records}, lock={self.lock})"
         return expression
-        
+
     def add(self, record: Record):
         if isinstance(record, dict):
             record = Record(**record)
@@ -356,12 +361,15 @@ class AucoDBMeta(ABC):
     ):
         pass
 
+    @abstractmethod
     def initialize(self, data_path: str, **kwargs):
         pass
 
+    @abstractmethod
     def add_collection(self, collection: Collection):
         pass
 
+    @abstractmethod
     def save(self):
         pass
 
