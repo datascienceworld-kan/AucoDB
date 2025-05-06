@@ -6,6 +6,7 @@ from datetime import datetime
 import uuid
 import logging
 from abc import ABC, abstractmethod
+from collections.abc import MutableMapping
 from pathlib import Path
 import re
 
@@ -25,10 +26,16 @@ class RecordMeta(ABC):
         self, created_at: datetime = None, updated_at: datetime = None, **kwargs
     ): ...
 
+    @abstractmethod
     def update(self, update_fields: dict): ...
 
+    @abstractmethod
+    def to_dict(self): ...
+        
 
-class JsonBase:
+class JsonBase(MutableMapping):
+    def __init__(self, **kwargs):
+        self._data = kwargs
     @classmethod
     def from_dict(cls, data: dict):
         return cls(**dict([(k, v) for (k, v) in data.items()]))
@@ -41,9 +48,23 @@ class JsonBase:
         path.parent.mkdir(parents=True, exist_ok=True)
         with open(path, "w") as f:
             json.dump(self.to_dict(), f, ensure_ascii=False, indent=4)
+    def __getitem__(self, key):
+        return self._data[key]
+
+    def __setitem__(self, key, value):
+        self._data[key] = value
+
+    def __delitem__(self, key):
+        del self._data[key]
+
+    def __iter__(self):
+        return iter(self._data)
+
+    def __len__(self):
+        return len(self._data)
 
 
-class Record(RecordMeta, JsonBase):
+class Record(JsonBase, RecordMeta):
     def __init__(
         self,
         id: str = None,
@@ -51,6 +72,7 @@ class Record(RecordMeta, JsonBase):
         updated_at: datetime = None,
         **kargs,
     ):
+        super().__init__(**kargs)
         self.id = id or str(uuid.uuid4())
         self.created_at = created_at or datetime.now()
         self.updated_at = updated_at or self.created_at
@@ -73,7 +95,7 @@ class Record(RecordMeta, JsonBase):
     def to_dict(self):
         items = []
         for k, v in self.__dict__.items():
-            if isinstance(v, Union[str, list, dict, tuple]):
+            if isinstance(v, Union[str, int, float, bool, list, dict]):
                 convert_v = v
             elif isinstance(v, Record):
                 convert_v = v.to_dict()
@@ -87,35 +109,43 @@ class CollectionMeta(ABC):
     @abstractmethod
     def __init__(self, *args, **kwargs):
         pass
-
+    
+    @abstractmethod
     def add(self, record: Record):
         pass
-
+    
+    @abstractmethod
     def delete(self, record_id: str):
         pass
-
+    
+    @abstractmethod
     def update(self, record_id: str, updated_dict: dict):
         pass
 
+    @abstractmethod
     def find(self, query: str):
         pass
-
+    
+    @abstractmethod
     def get(self, record_id: str):
         pass
-
+    
+    @abstractmethod
     def sort(self, field: str, reverse: bool = False):
         pass
 
 
-class Collection(CollectionMeta, JsonBase):
+class Collection(JsonBase, CollectionMeta):
     def __init__(
         self,
         name: str,
         id: str = None,
         records: List[Record] = [],
         lock: threading.Lock = None,
+        **kargs
     ):
         assert name
+        super().__init__(**kargs)
         self.name = name
         self.id = id or str(uuid.uuid4())
         self.records = records or []
@@ -129,7 +159,7 @@ class Collection(CollectionMeta, JsonBase):
             if k == "records":
                 convert_v = [rec.to_dict() for rec in v]
                 items.append((k, convert_v))
-            elif isinstance(v, Union[str, list, dict, tuple]):
+            elif isinstance(v, Union[str, int, float, bool, list, dict]):
                 items.append((k, v))
             else:
                 items.append((k, str(v)))
@@ -141,11 +171,22 @@ class Collection(CollectionMeta, JsonBase):
         with open(path, "w") as f:
             json.dump(self.to_dict(), f, ensure_ascii=False, indent=4)
 
+    @classmethod
+    def from_dict(cls, data: dict):
+        kv_pairs = []
+        for (k, v) in data.items():
+            if k == "records":
+                records = [Record.from_dict(v) for v in v]
+                kv_pairs.append((k, records))
+            else:
+                kv_pairs.append((k, v))
+        return cls(**dict(kv_pairs))
+    
     def __repr__(self):
         records = [rec.__repr__() for rec in self.records]
         expression = f"Collection(id={self.id}, name={self.name}, records={records}, lock={self.lock})"
         return expression
-
+        
     def add(self, record: Record):
         if isinstance(record, dict):
             record = Record(**record)
