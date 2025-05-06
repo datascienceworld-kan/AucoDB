@@ -100,13 +100,17 @@ class Record(JsonBase, RecordMeta):
     def to_dict(self):
         items = []
         for k, v in self.__dict__.items():
-            if isinstance(v, Union[str, int, float, bool, list, dict]):
+            if k == "_data":
+                pass
+            elif isinstance(v, Union[str, int, float, bool, list, dict]):
                 convert_v = v
+                items.append((k, convert_v))
             elif isinstance(v, Record):
                 convert_v = v.to_dict()
+                items.append((k, convert_v))
             else:
                 convert_v = str(v)
-            items.append((k, convert_v))
+                items.append((k, convert_v))
         return dict(items)
 
 
@@ -164,6 +168,8 @@ class Collection(JsonBase, CollectionMeta):
             if k == "records":
                 convert_v = [rec.to_dict() for rec in v]
                 items.append((k, convert_v))
+            elif k == "_data":
+                pass
             elif isinstance(v, Union[str, int, float, bool, list, dict]):
                 items.append((k, v))
             else:
