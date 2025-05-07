@@ -28,7 +28,7 @@ There are two ways to install AucoDB:
    ```
 2. Install by pip:
    ```
-   pip install aucodb==0.1.2
+   pip install aucodb==0.1.4
    ```
 ## Running the AucoDB Server
 
@@ -136,7 +136,7 @@ user3 = {"id": 3, "name": "Charlie", "age": 35, "email": "Charlie@example.com"}
 db.collections["users"].add(record=user1)
 db.collections["users"].add(record=user2)
 db.collections["users"].add(record=user3)
-db.save()
+db.save() # or db.save_async() for faster
 
 # Print all records
 print("All users:")

@@ -79,6 +79,7 @@ class AucoClient(AucoClientMeta):
             response = self.session.get(f"{self.base_url}/collections/")
             response.raise_for_status()
             logging.info("Successfully connected to AucoDB server")
+            return "Connected to AucoDB server"
         except requests.RequestException as e:
             logging.error(f"Failed to connect to server: {e}")
             raise ConnectionError(f"Cannot connect to {self.base_url}: {e}")

@@ -9,7 +9,7 @@ from abc import ABC, abstractmethod
 from collections.abc import MutableMapping
 from pathlib import Path
 import re
-
+import asyncio
 
 os.makedirs("logs", exist_ok=True)
 # Configure logging
@@ -93,7 +93,9 @@ class Record(JsonBase, RecordMeta):
             self.updated_at = datetime.now()
 
     def __repr__(self):
-        content = ", ".join([f"{k}={v}" for (k, v) in self.__dict__.items()])
+        content = ", ".join(
+            [f"{k}={v}" for (k, v) in self.__dict__.items() if k != "_data"]
+        )
         expression = f"Record({content})"
         return expression
 
@@ -389,12 +391,15 @@ class AucoDB(AucoDBMeta):
         self,
         data_name: str = "default",
         data_path: str = "cache/aucodb.json",
+        is_overwrite: bool = False,
         collections: List[Collection] = [],
+        lock: threading.Lock = None,
         *args,
         **kwargs,
     ):
         self.data_name = data_name
         self.data_path = data_path
+        self.is_overwrite = is_overwrite
         self.initialize(data_path)
 
         if not getattr(self, "collections"):
@@ -402,13 +407,14 @@ class AucoDB(AucoDBMeta):
             if collections:
                 for collection in collections:
                     self.add_collection(collection)
+        self.lock = threading.Lock()
 
     def initialize(self, data_path: str, **kwargs):
         """Initialize the database with a JSON file at data_path."""
         self.data_path = Path(data_path)
         os.makedirs(self.data_path.parent, exist_ok=True)
         try:
-            if self.data_path.exists():
+            if self.data_path.exists() and (not self.is_overwrite):
                 with open(self.data_path, "r") as f:
                     data = json.load(f)
                     self.collections = {
@@ -431,7 +437,14 @@ class AucoDB(AucoDBMeta):
             raise TypeError("Collection must be an instance of Collection")
         self.collections[collection.name] = collection
         self.save()
-
+    
+    async def save_async(self):
+        async def _call_memory_save(self):
+            """Asynchronously save the memory instance"""
+            async with self.lock:
+                self.memory.save()
+        return asyncio.create_task(self._call_memory_save())
+    
     def save(self):
         """Save the database to the JSON file."""
         if not self.data_path:
