@@ -1,0 +1,15 @@
+langchain==0.3.25
+langchain-cli==0.0.36
+langchain-community==0.3.23
+langchain-core==0.3.59
+langchain-huggingface==0.2.0
+langchain-milvus==0.1.10
+langchain-openai==0.3.16
+langchain-pinecone==0.2.6
+langchain-tests==0.3.19
+langchain-text-splitters==0.3.8
+langchain-together==0.3.0
+pymilvus==2.5.8
+pinecone==6.0.2
+pinecone-client==6.0.0
+pinecone-plugin-interface==0.0.7

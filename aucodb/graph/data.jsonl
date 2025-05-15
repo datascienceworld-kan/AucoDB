@@ -1,0 +1,2 @@
+{"head": "Steve Jobs", "head_type": "Person", "relation": "FOUNDED", "relation_properties": "in 1976", "tail": "Apple", "tail_type": "Company"}
+{"head": "Steve Jobs", "head_type": "Person", "relation": "HAS_AWARD", "relation_properties": "", "tail": "National Medal of Technology", "tail_type": "Award"}

@@ -1,0 +1,28 @@
+faiss:
+  index_name: sample_faiss_index
+
+chroma:
+  collection_name: sample_chroma_collection
+  persist_directory: ./chroma_sample_db
+
+milvus:
+  collection_name: sample_milvus_collection
+  db_path: ./milvus_demo.db
+  metric_type: COSINE
+
+weaviate:
+  class_name: SampleWeaviateClass
+  url: http://localhost:8080
+
+qdrant:
+  collection_name: sample_qdrant_collection
+  url: http://localhost:6333
+
+pinecone:
+  dimension: 384
+  index_name: semantic-search-fast
+  url: http://localhost:5080
+
+pgvector:
+  connection_string: postgresql://user:password@localhost:5432/vectordb
+  collection_name: sample_pgvector_collection

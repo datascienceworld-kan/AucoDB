@@ -437,14 +437,15 @@ class AucoDB(AucoDBMeta):
             raise TypeError("Collection must be an instance of Collection")
         self.collections[collection.name] = collection
         self.save()
-    
+
     async def save_async(self):
         async def _call_memory_save(self):
             """Asynchronously save the memory instance"""
             async with self.lock:
                 self.memory.save()
+
         return asyncio.create_task(self._call_memory_save())
-    
+
     def save(self):
         """Save the database to the JSON file."""
         if not self.data_path:
