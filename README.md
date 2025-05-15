@@ -35,10 +35,17 @@ To get started with AucoDB, clone the repository and install the required depend
    ```
    pip install aucodb
    ```
-   You can install aucodb with vectordb support.
+
+   This install of aucodb along with vectordb support.
    ```
-   pip install aucodb[vectordb]
+   pip install 'aucodb[vectordb]'
    ```
+
+   This install of aucodb along with graph support.
+   ```
+   pip install 'aucodb[graph]'
+   ```
+
 # 3. Tutorial
 
 ## 3.1. Running the AucoDB Server
