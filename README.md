@@ -258,7 +258,7 @@ services:
 Start neo4j service by command:
 
 ```
-docker-compose up -d
+docker-compose up
 ```
 
 Below is an example Python script to connect to Neo4j and use LLMGraphTransformer to extract a knowledge graph from text.
