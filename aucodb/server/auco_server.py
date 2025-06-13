@@ -87,7 +87,7 @@ async def get_all_records(collection_name: str):
     if collection_name not in db.collections:
         raise HTTPException(status_code=404, detail="Collection not found")
     collection = db.collections[collection_name]
-    if not collection:
+    if collection is None:
         raise HTTPException(status_code=404, detail="Collection is empty")
     return collection.to_dict()
 
@@ -97,7 +97,7 @@ async def get_record(collection_name: str, record_id: str):
     if collection_name not in db.collections:
         raise HTTPException(status_code=404, detail="Collection not found")
     record = db.collections[collection_name].get(str(record_id))
-    if not record:
+    if record is None:
         raise HTTPException(status_code=404, detail="Record not found")
     return record.to_dict()
 

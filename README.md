@@ -2,7 +2,7 @@
 
 AucoDB is a modern, lightweight NoSQL database designed for flexibility, fault tolerance, and seamless integration with agent-based systems. It provides a MongoDB-like document and collection structure, supports JSON-based data storage, and offers both HTTP-based and file-based CRUD operations. With thread-safe I/O and fault-tolerant design, AucoDB ensures data safety and reliability, making it an excellent choice for agent memory and other dynamic applications.
 
-## 1. Features
+# 1. Features
 
 AucoDB is designed with fault tolerance and thread-safe I/O operations to ensure data integrity. The database handles failures gracefully and prevents data corruption during concurrent operations, making it reliable for multi-threaded applications.
 
@@ -154,7 +154,10 @@ user3 = {"id": 3, "name": "Charlie", "age": 35, "email": "Charlie@example.com"}
 db.collections["users"].add(record=user1)
 db.collections["users"].add(record=user2)
 db.collections["users"].add(record=user3)
-db.save() # or db.save_async() for faster
+db.save()
+# or db.save_async() for faster
+# import asyncio
+# asyncio.run(db.save_async())
 
 # Print all records
 print("All users:")

@@ -10,6 +10,7 @@ from collections.abc import MutableMapping
 from pathlib import Path
 import re
 import asyncio
+import aiofiles
 
 os.makedirs("logs", exist_ok=True)
 # Configure logging
@@ -393,7 +394,6 @@ class AucoDB(AucoDBMeta):
         data_path: str = "cache/aucodb.json",
         is_overwrite: bool = False,
         collections: List[Collection] = [],
-        lock: threading.Lock = None,
         *args,
         **kwargs,
     ):
@@ -408,6 +408,7 @@ class AucoDB(AucoDBMeta):
                 for collection in collections:
                     self.add_collection(collection)
         self.lock = threading.Lock()
+        self.async_lock = asyncio.Lock()
 
     def initialize(self, data_path: str, **kwargs):
         """Initialize the database with a JSON file at data_path."""
@@ -415,7 +416,7 @@ class AucoDB(AucoDBMeta):
         os.makedirs(self.data_path.parent, exist_ok=True)
         try:
             if self.data_path.exists() and (not self.is_overwrite):
-                with open(self.data_path, "r") as f:
+                with open(self.data_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
                     self.collections = {
                         name: Collection.from_dict(col_data)
@@ -439,18 +440,29 @@ class AucoDB(AucoDBMeta):
         self.save()
 
     async def save_async(self):
-        async def _call_memory_save(self):
-            """Asynchronously save the memory instance"""
-            async with self.lock:
-                self.memory.save()
+        """Asynchronously save the database to the JSON file."""
+        if not self.data_path:
+            self.data_path.parent.mkdir(parents=True, exist_ok=True)
+            async with open(self.data_path, "w", encoding="utf-8") as f:
+                await f.write(json.dumps({}, indent=4))
+        try:
+            collections = {
+                name: collection.to_dict()
+                for name, collection in getattr(self, "collections", {}).items()
+            }
 
-        return asyncio.create_task(self._call_memory_save())
+            data = {"data_name": self.data_name, "collections": collections}
+            
+            async with aiofiles.open(self.data_path, "w", encoding="utf-8") as f:
+                await f.write(json.dumps(data, indent=4))
+        except Exception as e:
+            raise RuntimeError(f"Error saving database to {self.data_path}: {e}")
 
     def save(self):
         """Save the database to the JSON file."""
         if not self.data_path:
             self.data_path.parent.mkdir(parents=True, exist_ok=True)
-            with open(self.data_path, "w") as f:
+            with open(self.data_path, "w", encoding="utf-8") as f:
                 json.dump({}, f, indent=4)
         try:
             collections = {
@@ -460,7 +472,7 @@ class AucoDB(AucoDBMeta):
 
             data = {"data_name": self.data_name, "collections": collections}
 
-            with open(self.data_path, "w") as f:
+            with open(self.data_path, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=4)
         except Exception as e:
             raise RuntimeError(f"Error saving database to {self.data_path}: {e}")
