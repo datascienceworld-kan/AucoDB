@@ -25,16 +25,13 @@ class RecordMeta(ABC):
     @abstractmethod
     def __init__(
         self, created_at: datetime = None, updated_at: datetime = None, **kwargs
-    ):
-        ...
+    ): ...
 
     @abstractmethod
-    def update(self, update_fields: dict):
-        ...
+    def update(self, update_fields: dict): ...
 
     @abstractmethod
-    def to_dict(self):
-        ...
+    def to_dict(self): ...
 
 
 class JsonBase(MutableMapping):
@@ -452,7 +449,7 @@ class AucoDB(AucoDBMeta):
             }
 
             data = {"data_name": self.data_name, "collections": collections}
-            
+
             async with aiofiles.open(self.data_path, "w", encoding="utf-8") as f:
                 await f.write(json.dumps(data, indent=4))
         except Exception as e:

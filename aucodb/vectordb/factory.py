@@ -125,11 +125,16 @@ class VectorDatabaseFactory:
         Args:
             list_texts (Union[List[str], List[Document]]) List of documents to store.
         """
-        if len(list_texts) > 0 and isinstance(list_texts[0], Document):
-            self.vectordb.store_documents(list_texts)
-        else:
+        if isinstance(list_texts[0], Document):
             documents = self.doc_processor.process_documents(list_texts)
             self.vectordb.store_documents(documents)
+        elif isinstance(list_texts[0], str):
+            documents = self.doc_processor.process_strings(list_texts)
+            self.vectordb.store_documents(documents)
+        else:
+            raise ValueError(
+                "Unsupported document type. Only str or Document is supported."
+            )
 
     def query(self, query: str, top_k: int = 5) -> List[Dict[str, Any]]:
         """

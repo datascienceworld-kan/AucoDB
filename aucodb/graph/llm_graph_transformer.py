@@ -148,26 +148,34 @@ class LLMGraphTransformer:
             '"head_type", "relation", "tail", and "tail_type". The "head" '
             "key must contain the text of the extracted entity with one of the types "
             "from the provided list in the user prompt.",
-            f'The "head_type" key must contain the type of the extracted head entity, '
-            f"which must be one of the types from {node_labels_str}."
-            if node_labels
-            else "",
-            f'The "relation" key must contain the type of relation between the "head" '
-            f'and the "tail", which must be one of the relations from {rel_types_str}.'
-            if rel_types
-            else "",
-            f'The "tail" key must represent the text of an extracted entity which is '
-            f'the tail of the relation, and the "tail_type" key must contain the type '
-            f"of the tail entity from {node_labels_str}."
-            if node_labels
-            else "",
-            "Your task is to extract relationships from text strictly adhering "
-            "to the provided schema. The relationships can only appear "
-            "between specific node types are presented in the schema format "
-            "like: (Entity1Type, RELATIONSHIP_TYPE, Entity2Type) /n"
-            f"Provided schema is {rel_types}"
-            if relationship_type == "tuple"
-            else "",
+            (
+                f'The "head_type" key must contain the type of the extracted head entity, '
+                f"which must be one of the types from {node_labels_str}."
+                if node_labels
+                else ""
+            ),
+            (
+                f'The "relation" key must contain the type of relation between the "head" '
+                f'and the "tail", which must be one of the relations from {rel_types_str}.'
+                if rel_types
+                else ""
+            ),
+            (
+                f'The "tail" key must represent the text of an extracted entity which is '
+                f'the tail of the relation, and the "tail_type" key must contain the type '
+                f"of the tail entity from {node_labels_str}."
+                if node_labels
+                else ""
+            ),
+            (
+                "Your task is to extract relationships from text strictly adhering "
+                "to the provided schema. The relationships can only appear "
+                "between specific node types are presented in the schema format "
+                "like: (Entity1Type, RELATIONSHIP_TYPE, Entity2Type) /n"
+                f"Provided schema is {rel_types}"
+                if relationship_type == "tuple"
+                else ""
+            ),
             "Attempt to extract as many entities and relations as you can. Maintain "
             "Entity Consistency: When extracting entities, it's vital to ensure "
             'consistency. If an entity, such as "John Doe", is mentioned multiple '
@@ -187,25 +195,31 @@ class LLMGraphTransformer:
         human_string_parts = [
             "Based on the following example, extract entities and "
             "relations from the provided text.\n\n",
-            "Use the following entity types, don't use other entity "
-            "that is not defined below:"
-            "# ENTITY TYPES:"
-            "{node_labels}"
-            if node_labels
-            else "",
-            "Use the following relation types, don't use other relation "
-            "that is not defined below:"
-            "# RELATION TYPES:"
-            "{rel_types}"
-            if rel_types
-            else "",
-            "Your task is to extract relationships from text strictly adhering "
-            "to the provided schema. The relationships can only appear "
-            "between specific node types are presented in the schema format "
-            "like: (Entity1Type, RELATIONSHIP_TYPE, Entity2Type) /n"
-            f"Provided schema is {rel_types}"
-            if relationship_type == "tuple"
-            else "",
+            (
+                "Use the following entity types, don't use other entity "
+                "that is not defined below:"
+                "# ENTITY TYPES:"
+                "{node_labels}"
+                if node_labels
+                else ""
+            ),
+            (
+                "Use the following relation types, don't use other relation "
+                "that is not defined below:"
+                "# RELATION TYPES:"
+                "{rel_types}"
+                if rel_types
+                else ""
+            ),
+            (
+                "Your task is to extract relationships from text strictly adhering "
+                "to the provided schema. The relationships can only appear "
+                "between specific node types are presented in the schema format "
+                "like: (Entity1Type, RELATIONSHIP_TYPE, Entity2Type) /n"
+                f"Provided schema is {rel_types}"
+                if relationship_type == "tuple"
+                else ""
+            ),
             "Below are a number of examples of text and their extracted "
             "entities and relationships."
             "{examples}\n",
