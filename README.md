@@ -8,6 +8,7 @@
 [![PyPI Downloads](https://static.pepy.tech/badge/aucodb/week)](https://pepy.tech/projects/aucodb)
 [![Downloads](https://static.pepy.tech/badge/aucodb/month)](https://pepy.tech/project/aucodb)
 [![PyPI Downloads](https://static.pepy.tech/badge/aucodb)](https://pepy.tech/projects/aucodb)
+[![Discord](https://img.shields.io/badge/Chat-Discord-5865F2?logo=discord&logoColor=white)](https://discord.com/channels/1036147288994758717/1460304579852767438)
 ![License](https://img.shields.io/github/license/datascienceworld-kan/aucodb)
 
 AucoDB is a modern, lightweight NoSQL database designed for flexibility, fault tolerance, and seamless integration with agent-based systems. It provides a MongoDB-like document and collection structure, supports JSON-based data storage, and offers both HTTP-based and file-based CRUD operations. With thread-safe I/O and fault-tolerant design, AucoDB ensures data safety and reliability, making it an excellent choice for agent memory and other dynamic applications.
