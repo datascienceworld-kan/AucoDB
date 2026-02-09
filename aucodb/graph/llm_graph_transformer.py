@@ -184,7 +184,7 @@ class LLMGraphTransformer:
             "that entity. The knowledge graph should be coherent and easily "
             "understandable, so maintaining consistency in entity references is "
             "crucial.",
-            "IMPORTANT NOTES:\n- Don't add any explanation and text. ",
+            "IMPORTANT NOTES:\n- Don't add any explanation and text. \n- head type and tail type should replace space with underscore",
             additional_instructions,
         ]
         system_prompt = "\n".join(filter(None, base_string_parts))
