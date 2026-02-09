@@ -38,6 +38,8 @@ class UnstructuredRelation(BaseModel):
         description="type of the extracted tail entity like Person, Company, etc"
     )
 
+class GraphExtraction(BaseModel):
+    routes: List[UnstructuredRelation]
 
 class LLMGraphTransformer:
     """
@@ -51,7 +53,7 @@ class LLMGraphTransformer:
 
     def __init__(self, llm=Union[ChatTogether, BaseLanguageModel, BaseChatOpenAI]):
         self.llm = llm
-        self.parser = JsonOutputParser(pydantic_object=UnstructuredRelation)
+        self.parser = JsonOutputParser(pydantic_object=GraphExtraction)
         self.examples = [
             {
                 "text": (
@@ -184,13 +186,13 @@ class LLMGraphTransformer:
             "that entity. The knowledge graph should be coherent and easily "
             "understandable, so maintaining consistency in entity references is "
             "crucial.",
-            "IMPORTANT NOTES:\n- Don't add any explanation and text. \n- head type and tail type should replace space with underscore",
+            "IMPORTANT NOTES:\n- Don't add any explanation and text. \n- Don't have space in head_type and tail_type value",
             additional_instructions,
         ]
         system_prompt = "\n".join(filter(None, base_string_parts))
 
         system_message = SystemMessage(content=system_prompt)
-        parser = JsonOutputParser(pydantic_object=UnstructuredRelation)
+        parser = JsonOutputParser(pydantic_object=GraphExtraction)
 
         human_string_parts = [
             "Based on the following example, extract entities and "
@@ -245,6 +247,14 @@ class LLMGraphTransformer:
             [system_message, human_message_prompt]
         )
         return chat_prompt
+    
+    def post_process(self, extracted_content: list) -> list:
+        """Post-process the extracted content to ensure consistency and coherence."""
+        for i, item in enumerate(extracted_content):
+            item["head_type"] = item["head_type"].replace(" ", "_")
+            item["tail_type"] = item["tail_type"].replace(" ", "_")
+            extracted_content[i] = item
+        return extracted_content
 
     def generate_graph(
         self,
@@ -262,5 +272,6 @@ class LLMGraphTransformer:
         )
 
         self.chain = prompt | self.llm | self.parser
-        extracted_content = self.chain.invoke(message)
+        extracted_content = self.chain.invoke(message)['routes']
+        extracted_content = self.post_process(extracted_content)
         return extracted_content

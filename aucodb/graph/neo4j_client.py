@@ -166,6 +166,7 @@ class AucoDBNeo4jClient:
             additional_instructions=additional_instructions,
         )
         # 2. insert graph into neo4j
+        print(data)
         self.insert_graph(data)
         # 3. close the connection
         self.close()
