@@ -296,16 +296,20 @@ load_dotenv()
 client = AucoDBNeo4jClient(uri = NEO4J_URI)
 
 # Step 2: Construct Knowledge Graph
-text_input = """Hi, my name is Kan. I was born in Thanh Hoa Province, Vietnam, in 1993.
-My motto is: "Make the world better with data and models". That’s why I work as an AI Solution Architect at FPT Software and as an AI lecturer at NEU.
-I began my journey as a gifted student in Mathematics at the High School for Gifted Students, VNU University, where I developed a deep passion for Math and Science.
-Later, I earned an Excellent Bachelor's Degree in Applied Mathematical Economics from NEU University in 2015. During my time there, I became the first student from the Math Department to win a bronze medal at the National Math Olympiad.
-I have been working as an AI Solution Architect at FPT Software since 2021.
-I have been teaching AI and ML courses at NEU university since 2022.
-I have conducted extensive research on Reliable AI, Generative AI, and Knowledge Graphs at FPT AIC.
-I was one of the first individuals in Vietnam to win a paper award on the topic of Generative AI and LLMs at the Nvidia GTC Global Conference 2025 in San Jose, USA.
-I am the founder of DataScienceWorld.Kan, an AI learning hub offering high-standard AI/ML courses such as Build Generative AI Applications and MLOps – Machine Learning in Production, designed for anyone pursuing a career as an AI/ML engineer.
-Since 2024, I have participated in Google GDSC and Google I/O as a guest speaker and AI/ML coach for dedicated AI startups.
+text_input = """Hi, my name is Kan. My motto is: "Make the world better with data and models". That’s why I am working as an AI Solution Architect at FPT Software and as an AI lecturer at DataScienceWorld.Kan.
+
+I began my journey as a gifted student in Mathematics at the High School for Gifted Students, VNU University, where I developed a deep passion for Math and Science since 2009. Later, I completed Bachelor's Degree in Mathematical Economics in 2015 with excellent level. In the meantime, I won a bronze medal at the National Math Olympiad at Calculus.
+
+After graduation, I started my journey by writing AI/Machine Learning blogs with R on RPubs and python on phamdinhkhanh.github.io, where I share my knowledge and explain complex machine learning algorithms in a simple way, along with many practical use cases.
+I have been working as an AI Solution Architect at FPT Software since 2024 and at Orient Software since 2022. Previously, I worked at Vingroup as an Senior AI Engineer starting in 2017. I began my career at financial institutions like Techcombank and VNDIRECT in 2015, where I worked for two years as a Data Scientist.
+
+In aspect of education, I designed 6 specialized courses about Deep Learning and Machine Learning that helps to train thoudsands of students essential Machine Learning skills at DataScienceWorld.Kan. Fortunately, I was invited to train many AI/ML program for bigtech companies and universities in Vietnam like Google Cloud - QuanQuanGCP 2024, Viettel - Digital Talent Program 2024, FPT Software - Upskill LLM/GenAI for Engineers 2025, NEU university - Design machine learning system 2025, FTU - Upskill AI Olympiad Team 2025. Since 2024, I have participated in Google GDSC as AI/ML mentors for dedicated AI startups.
+
+In aspect of research, I have conducted extensive research on Reliable AI, Generative AI, and Knowledge Graphs at FPT AI1. Where I have won a paper award on the topic of Generative AI and LLMs at the Nvidia GTC Global Conference 2025.
+
+I am the founder of DataScienceWorld.Kan, an AI learning hub offering useful AI/ML courses such as Deep Learning, Machine Learning Handson with Python, Build Generative AI Applications and MLOps – Machine Learning in Production, designed for anyone pursuing a career as an AI/ML engineer.
+
+In addition, my eBook Machine Learning Algorithms to Practice, published on phamdinhkhanh.github.io/deepai-book, is a widely used resource for students worldwide to study and practice machine learning, featuring intuitive code examples and clear explanations of machine learning theory.
 """
 
 llm = ChatTogether(
